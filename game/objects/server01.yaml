@@ -1,0 +1,35 @@
+id: server1
+
+states:
+  hacked: 0
+  online: 1
+  blocked: 0
+
+password: racehorse
+
+ports:
+  '3306':
+    vuln:
+      - crack
+    info: database server
+
+files:
+  # folder
+  - data:
+    # file
+    - name: secret.dat
+      content: |
+        very secret data
+    # file
+    - name: users.dat
+      content: |
+        John
+        Grace
+        Mildred
+
+  #folder
+  - trashbin:
+    # file
+    - name: email.txt
+      content: |
+        to my stupid boss: I quit!!

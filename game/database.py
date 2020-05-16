@@ -1,0 +1,40 @@
+from rethinkdb import r
+
+DATABASE = 'hack'
+
+def connect() -> r.connection_type:
+    ''' connect to instance without database '''
+    return r.connect(host="10.0.0.2", password="johnny5")
+
+def _connect_hack() -> r.connection_type:
+    ''' connect to instance with hardcoded database '''
+    return r.connect(host="10.0.0.2", password="johnny5", db=DATABASE)
+
+def get_targets() -> dict:
+    ''' return all target information '''
+    conn = _connect_hack()
+    targets = r.table('targets').run(conn)
+
+    return targets
+
+def target_details(target: str, port: int = 0) -> dict:
+    ''' return significant target details '''
+    conn = _connect_hack()
+    tgt  = r.table('targets').get(target).run(conn)
+
+    meta             = {}
+    meta["hostname"] = tgt.get('id')
+    meta["online"]   = tgt.get('states', {})['online']
+    meta["hacked"]   = tgt.get('states', {})['hacked']
+    meta["blocked"]  = tgt.get('states', {})['blocked']
+    meta["ports"]    = tgt.get('ports')
+    meta["vuln"]     = meta['ports'].get(port, {}).get('vuln', 0)
+    meta["files"]    = tgt.get('files', {})
+    meta["password"] = tgt.get('password', '')
+
+    return meta
+
+def state_change(target: str, key: str, value: int) -> dict:
+    ''' change target state '''
+    conn = _connect_hack()
+    r.table('targets').get(target).update({"states": {key: value}}).run(conn)
