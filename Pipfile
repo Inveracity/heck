@@ -13,3 +13,7 @@ tabulate = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+heck = "python heck.py"
+init = "python game/init.py"
