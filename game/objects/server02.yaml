@@ -9,7 +9,7 @@ ports:
     vuln:
       - ddos
     info: web server
-    state: closed
+    state: open
 
   '443':
     vuln:

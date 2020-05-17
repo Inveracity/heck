@@ -12,10 +12,6 @@ ports:
       - crack
     info: database server
     state: open
-  '22':
-    vuln: []
-    info: database server
-    state: open
 
 files:
   # folder
