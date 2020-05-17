@@ -11,8 +11,14 @@ for target in targets:
     target_ports = []
 
     for port in ports:
+        port_state = ports[port]['state']
 
-        target_ports.append([port, colored("open", "green"), ports[port]['info']])
+        if port_state == "open":
+            color = "green"
+        else:
+            color = "red"
+
+        target_ports.append([port, colored(port_state, color), ports[port]['info']])
 
     if target['states']['online']:
         cprint("-"*50, "cyan")
@@ -20,6 +26,3 @@ for target in targets:
         headers = ["port", "status", "info"]
         print(tabulate(target_ports, headers, tablefmt="plain"))
         print()
-
-    if target['states']['']
-

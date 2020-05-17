@@ -1,5 +1,5 @@
 from game.database import target_details
-from game.database import state_change
+
 
 def password(target):
     target_data = target_details(target)

@@ -3,7 +3,6 @@ from database import connect
 
 import os
 import inspect
-import json
 import yaml
 
 DATABASE = 'hack'
@@ -25,7 +24,7 @@ for table in TABLES:
 db = r.db(DATABASE)
 
 players = db.table('players')
-players.insert({ "id": 1, "player": "john"}).run(conn)
+players.insert({"id": 1, "player": "john"}).run(conn)
 
 print("inserting game objects")
 targets      = db.table('targets')

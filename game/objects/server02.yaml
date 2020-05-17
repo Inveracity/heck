@@ -3,15 +3,16 @@ id: server2
 states:
   hacked: 0
   online: 1
-  blocked: 0
 
 ports:
   '80':
     vuln:
       - ddos
     info: web server
+    state: closed
 
   '443':
     vuln:
       - ddos
     info: secure web server
+    state: open

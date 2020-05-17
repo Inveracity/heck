@@ -3,7 +3,6 @@ id: server1
 states:
   hacked: 0
   online: 1
-  blocked: 0
 
 password: racehorse
 
@@ -12,6 +11,11 @@ ports:
     vuln:
       - crack
     info: database server
+    state: open
+  '22':
+    vuln: []
+    info: database server
+    state: open
 
 files:
   # folder

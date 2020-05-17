@@ -1,51 +1,39 @@
-import time
-import random
-import sys
 import argparse
 
-from game.database import target_details
 from game.database import state_change
+from game.database import port_state_change
 from game.utils import dot_animation
+from game.utils import host_check
 from termcolor import cprint
 
-parser = argparse.ArgumentParser()
-parser.add_argument('target')
-parser.add_argument('port')
-args = parser.parse_args()
 
 def ddos(target: dict, port: int):
-    cprint("sending overload packets", "cyan")
-
-    tgt = target_details(target, port)
-
-    online  = tgt["online"]
-    blocked = tgt["blocked"]
-    vuln    = tgt["vuln"]
-
-    if not online:
-        cprint("target unreachable", "red")
-        exit()
-
-    if blocked:
-        cprint("connection blocked by target", "red")
-        exit()
+    tgt  = host_check(target, port)
+    vuln = tgt["vuln"]
 
     if not vuln or 'ddos' not in vuln:
         cprint("DDoS attempted detected", "red")
-        state_change(target, "blocked", 1)
+        port_state_change(target, port, "closed")
         return
 
     cprint("DDoS in progress", "cyan")
     state_change(target, "online", 0)
 
+
 def ddos_end(target):
     state_change(target, "online", 1)
 
 
-ddos(args.target, args.port)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('target')
+    parser.add_argument('port')
+    args = parser.parse_args()
 
-while True:
-    if dot_animation():
-        break
+    ddos(args.target, args.port)
 
-ddos_end(args.target)
+    while True:
+        if dot_animation():
+            break
+
+    ddos_end(args.target)

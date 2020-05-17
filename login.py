@@ -1,48 +1,26 @@
 import argparse
 import traceback
+from termcolor import cprint
 
 from game.database import state_change
-from game.database import target_details
-from game.utils import game_wait
-
-parser = argparse.ArgumentParser()
-parser.add_argument('target')
-args = parser.parse_args()
+from game.utils import dot_animation
+from game.utils import host_check
 
 
-def login(target):
-    tgt = target_details(target)
-
-    online  = tgt["online"]
-    hacked  = tgt["hacked"]
-    blocked = tgt["blocked"]
-
-    if not online:
-        print("ERROR: unreachable")
-        exit()
-
-    if blocked:
-        print("WARNING: Blocked from accessing server")
-        exit()
-
-    if not hacked:
-        print("INFO: unrecognised access credentials")
-        exit()
-
-    return tgt
-
-def ls(t, args):
+def ls(t: dict, _):
     folders = t['files']
 
     for f in folders:
         folder = list(f.keys())[0]
         files = f[folder]
         for file in files:
-            print(f"  /{folder}/{file['name']}")
+            cprint(f"  /{folder}/{file['name']}", "cyan")
+
 
 def cat(t: dict, args: list):
     folders = t['files']
 
+    # TODO: this is awful
     if len(args) == 1:
         a = args[0].split("/")[1:][0]
         b = args[0].split("/")[1:][1]
@@ -51,55 +29,67 @@ def cat(t: dict, args: list):
             if files:
                 for file in files:
                     if file['name'] == b:
-                        print(f"  file['content']")
+                        cprint(f"{file['content']}", "cyan")
 
 
-def whoami(t, args):
-    print(f"admin@{t['hostname']}.local")
+def whoami(t: dict, _):
+    cprint(f"admin@{t['hostname']}.local")
 
 
-def quit(t, args):
+def quit(t, _):
     exit()
 
 
-def shutdown(t, args):
-    print(f' Shutdown initiated by admin')
-    state_change(target, "online", 0)
-    print("lost connection to host")
+def shutdown(t: dict, _):
+    cprint('Shutdown initiated by admin', "yellow")
+    state_change(t['hostname'], "online", 0)
+    cprint("lost connection to host", "red")
     exit()
+
 
 switch = {
-    'ls'      : ls,
-    'whoami'  : whoami,
-    'quit'    : quit,
+    'ls': ls,
+    'whoami': whoami,
+    'quit': quit,
     'shutdown': shutdown,
-    'cat'     : cat,
+    'cat': cat,
 }
 
-print("INFO: connecting")
-game_wait()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('target')
+    parser.add_argument('port')
+    args = parser.parse_args()
 
-while True:
-    try:
-        tgt = login(args.target)
-        userinput = input(f"{args.target}: ")
+    tgt    = host_check(args.target, args.port)
+    hacked = tgt["hacked"]
 
-        if userinput == 'help':
-            print(', '.join(switch.keys()))
-
-        else:
-            try:
-                userargs = userinput.split()
-                switch[userargs[0]](tgt, userargs[1:])
-
-            except Exception as e:
-                print(traceback.format_exc(e))
-                print("invalid command")
-
-    except KeyboardInterrupt:
+    if not hacked:
+        cprint("Unrecognised access credentials", "yellow")
         exit()
 
-    except Exception as e:
-        print(traceback.format_exc(e))
-        print()
+    dot_animation()
 
+    # TODO: all of this is also pretty awful
+    while True:
+        try:
+            userinput = input(f"{args.target}: ")
+
+            if userinput == 'help':
+                cprint(', '.join(switch.keys()), "cyan")
+
+            else:
+                try:
+                    userargs = userinput.split()
+                    switch[userargs[0]](tgt, userargs[1:])
+
+                except Exception as e:
+                    cprint(traceback.format_exc(e), "red")
+                    cprint("invalid command", "yellow")
+
+        except KeyboardInterrupt:
+            exit()
+
+        except Exception as e:
+            cprint(traceback.format_exc(e), "red")
+            print()
