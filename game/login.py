@@ -42,7 +42,7 @@ def cat(t: dict, args: list):
                             cprint(f"{file['content']}", "cyan")
                             return
 
-    cprint("file not found", "yellow")
+    cprint("no such file or directory", "yellow")
 
 
 def whoami(t: dict, _):
