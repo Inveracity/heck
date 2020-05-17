@@ -21,6 +21,11 @@ def get_targets() -> dict:
     return targets
 
 
+def get_targets_live():
+    conn = _connect_hack()
+    return r.table('targets').changes(include_initial=True).run(conn)
+
+
 def target_details(target: str, port: int = 0) -> dict:
     ''' return significant target details '''
     conn = _connect_hack()

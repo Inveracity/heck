@@ -1,11 +1,32 @@
+import argparse
 from game.database import get_targets
+from game.database import get_targets_live
 from tabulate import tabulate
 from termcolor import colored
 from termcolor import cprint
-targets = get_targets()
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--live",
+    dest='live',
+    help="output events as they occur",
+    action="store_true"
+)
+
+args = parser.parse_args()
+
+if args.live:
+    try:
+        targets = get_targets_live()
+    except KeyboardInterrupt:
+        exit()
+else:
+    targets = get_targets()
 
 output = ''
 for target in targets:
+    if args.live:
+        target = target.get('new_val')
     ports = target['ports']
 
     target_ports = []
