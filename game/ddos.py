@@ -7,7 +7,7 @@ from game.utils import host_check
 from termcolor import cprint
 
 
-def ddos(target: dict, port: int):
+def _ddos(target: dict, port: int):
     tgt  = host_check(target, port)
     vuln = tgt["vuln"]
 
@@ -20,20 +20,15 @@ def ddos(target: dict, port: int):
     state_change(target, "online", 0)
 
 
-def ddos_end(target):
+def _ddos_end(target):
     state_change(target, "online", 1)
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('target')
-    parser.add_argument('port')
-    args = parser.parse_args()
-
-    ddos(args.target, args.port)
+def ddos(target: dict, port: int):
+    _ddos(target, port)
 
     while True:
         if dot_animation():
             break
 
-    ddos_end(args.target)
+    _ddos_end(target)

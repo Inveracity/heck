@@ -16,7 +16,7 @@ def crack(target, port):
     vuln   = tgt["vuln"]
 
     if hacked:
-        cprint("target already cracked", "green")
+        cprint("Shell is ready, use login to connect", "green")
         return
 
     if not vuln or "crack" not in vuln:
@@ -26,16 +26,11 @@ def crack(target, port):
 
     if password(target):
         cprint("Access Granted", "green")
+        cprint("Injecting reverse shell", "cyan")
+        if dot_animation():
+            exit()
+        cprint("Injection complete", "green")
         state_change(target, "hacked", 1)
         return
 
     return
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("target")
-    parser.add_argument("port")
-    args = parser.parse_args()
-
-    crack(args.target, args.port)
