@@ -17,10 +17,10 @@ pip install pipenv
 pipenv sync
 
 # Set up game data
-pipenv run python game/init.py
+pipenv run init
 
-# Try scan.py
-pipenv run python scan.py
+# show help text
+pipenv run heck -h
 ```
 
 _to be continued_
