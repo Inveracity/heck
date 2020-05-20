@@ -1,7 +1,8 @@
-import argparse
 from termcolor import cprint
+
 from game.database import state_change
 from game.database import port_state_change
+
 from game.utils import dot_animation
 from game.utils import host_check
 from game.guess import password

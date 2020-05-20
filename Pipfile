@@ -4,6 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flake8 = "*"
+flake8-annotations = "*"
 
 [packages]
 rethinkdb = "*"
@@ -17,3 +19,4 @@ python_version = "3.8"
 [scripts]
 heck = "python heck.py"
 init = "python game/init.py"
+lint = "python -m flake8 ."

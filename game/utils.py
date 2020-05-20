@@ -9,7 +9,9 @@ from game.database import target_details
 GAME_SPEED = 10  # larger number = slower game speed
 
 
-def dot_animation():
+def dot_animation() -> bool:
+    """ give player a feeling of stuff happening """
+
     try:
         for x in range(random.randint(1*2, GAME_SPEED*2)):
             dot = colored(".", "cyan")

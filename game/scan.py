@@ -1,41 +1,68 @@
-import argparse
+import asyncio
+
 from game.database import get_targets
-from game.database import get_targets_live
+from game.database import connect_hack as connect
+
+from rethinkdb import r
+
 from tabulate import tabulate
 from termcolor import colored
 from termcolor import cprint
 
-def scan(live: bool):
+
+async def close():
+    exit()
+
+
+async def changefeed():
+    """ Continuously receive updates as they occur """
+    r.set_loop_type('asyncio')
+
+    conn    = await connect()
+    targets = r.table('targets')
+    cursor  = await targets.changes(include_initial=True).run(conn)
+
+    async for target in cursor:
+        new = target.get("new_val", {})
+        print_target(new)
+
+
+def scan(live: bool) -> None:
+    """ Output stuff live """
 
     if live:
+        loop = asyncio.get_event_loop()
         try:
-            targets = get_targets_live()
+            loop.run_until_complete(changefeed())
         except KeyboardInterrupt:
-            exit()
+            loop.run_until_complete(close())
+
     else:
         targets = get_targets()
 
-    output = ''
-    for target in targets:
-        if live:
+        for target in targets:
             target = target.get('new_val')
-        ports = target['ports']
+            print_target(target)
 
-        target_ports = []
 
-        for port in ports:
-            port_state = ports[port]['state']
+def print_target(target: dict):
+    ports = target['ports']
 
-            if port_state == "open":
-                color = "green"
-            else:
-                color = "red"
+    target_ports = []
 
-            target_ports.append([port, colored(port_state, color), ports[port]['info']])
+    for port in ports:
+        port_state = ports[port]['state']
 
-        if target['states']['online']:
-            cprint("-"*50, "cyan")
-            cprint(target['id'], "cyan")
-            headers = ["port", "status", "info"]
-            print(tabulate(target_ports, headers, tablefmt="plain"))
-            print()
+        if port_state == "open":
+            color = "green"
+        else:
+            color = "red"
+
+        target_ports.append([port, colored(port_state, color), ports[port]['info']])
+
+    if target['states']['online']:
+        cprint("-"*50, "cyan")
+        cprint(target['id'], "cyan")
+        headers = ["port", "status", "info"]
+        print(tabulate(target_ports, headers, tablefmt="plain"))
+        print()

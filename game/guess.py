@@ -1,7 +1,7 @@
 from game.database import target_details
 
 
-def password(target):
+def password(target: dict) -> bool:
     target_data = target_details(target)
 
     secret = target_data["password"]

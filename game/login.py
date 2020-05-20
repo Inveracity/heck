@@ -1,17 +1,16 @@
-import argparse
-import traceback
+from typing import NoReturn
+from typing import Any
 
 from os import linesep
 
 from termcolor import cprint
-from termcolor import colored
 
 from game.database import state_change
 from game.utils import dot_animation
 from game.utils import host_check
 
 
-def ls(t: dict, _):
+def ls(t: dict, _: Any) -> NoReturn:
     ''' list full folder and file paths '''
 
     folders = t.get('files', None)
@@ -23,7 +22,7 @@ def ls(t: dict, _):
                 cprint(f"  /{folder}/{file['name']}", "cyan")
 
 
-def cat(t: dict, args: list):
+def cat(t: dict, args: list) -> NoReturn:
     '''
         a valid arg is a path to a file like: ['/data/secret.dat']
     '''
@@ -45,28 +44,28 @@ def cat(t: dict, args: list):
     cprint("no such file or directory", "yellow")
 
 
-def whoami(t: dict, _):
+def whoami(t: dict, _: Any) -> NoReturn:
     cprint(f"admin@{t['hostname']}.local", "cyan")
 
 
-def quit(t, _):
-    cprint("disconnected", "yellow" )
+def quit(t: dict, _: Any) -> NoReturn:
+    cprint("disconnected", "yellow")
     exit()
 
 
-def shutdown(t: dict, _):
+def shutdown(t: dict, _: Any) -> NoReturn:
     cprint('Shutdown initiated by admin', "yellow")
     state_change(t['hostname'], "online", 0)
     cprint("lost connection to host", "red")
     exit()
 
 
-def show_cmds(t: dict, _):
+def show_cmds(t: dict, _: Any) -> NoReturn:
     cmds = linesep.join(switch.keys())
     cprint(cmds, "cyan")
 
 
-def login(target: dict, port: int):
+def login(target: dict, port: int) -> NoReturn:
     tgt    = host_check(target, port)
     hacked = tgt["hacked"]
 
@@ -83,8 +82,8 @@ def login(target: dict, port: int):
             userargs = userinput.split()
 
             if userinput == '':
-              cprint("for a list of commands type: help", "yellow")
-              continue
+                cprint("for a list of commands type: help", "yellow")
+                continue
 
             elif userargs[0] in switch.keys():
                 switch[userargs[0]](tgt, userargs[1:])
@@ -94,6 +93,7 @@ def login(target: dict, port: int):
 
         except KeyboardInterrupt:
             exit()
+
 
 switch = {
     'ls': ls,

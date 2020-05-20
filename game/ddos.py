@@ -1,4 +1,4 @@
-import argparse
+from typing import NoReturn
 
 from game.database import state_change
 from game.database import port_state_change
@@ -7,7 +7,7 @@ from game.utils import host_check
 from termcolor import cprint
 
 
-def _ddos(target: dict, port: int):
+def _ddos(target: dict, port: int) -> NoReturn:
     tgt  = host_check(target, port)
     vuln = tgt["vuln"]
 
@@ -20,11 +20,11 @@ def _ddos(target: dict, port: int):
     state_change(target, "online", 0)
 
 
-def _ddos_end(target):
+def _ddos_end(target: dict) -> NoReturn:
     state_change(target, "online", 1)
 
 
-def ddos(target: dict, port: int):
+def ddos(target: dict, port: int) -> NoReturn:
     _ddos(target, port)
 
     while True:
