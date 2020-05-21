@@ -10,6 +10,15 @@ from termcolor import colored
 from termcolor import cprint
 
 
+from datetime import datetime
+
+def current_time() -> str:
+    """ return current time of day """
+    now = datetime.now()
+
+    clock = now.strftime("%H:%M:%S")
+    return clock
+
 async def close():
     exit()
 
@@ -69,7 +78,9 @@ def print_target(target: dict):
     if not target["states"]["online"]:
         state = colored("(offline)", "red")
 
-    cprint("-"*50, "cyan")
+    clock = current_time()
+    lines = "-" * 50
+    cprint(f"{clock}{lines}", "cyan")
     print(f"{target['id']} {state}")
 
     if target["states"]["online"]:

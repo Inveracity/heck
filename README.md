@@ -2,6 +2,10 @@
 
 hacking mini game Written in Python 3.8
 
+## Prototype screenshot
+
+![](docs/images/prototype.png)
+
 ## Install development environment
 
 Start database
