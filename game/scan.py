@@ -1,7 +1,9 @@
 import asyncio
+import time
 
 from game.database import get_targets
 from game.database import connect_hack as connect
+from game.utils import clear_console
 
 from rethinkdb import r
 
@@ -22,7 +24,7 @@ def current_time() -> str:
 async def close():
     exit()
 
-
+# When compiling to an executable this unfortunately doesn't work due to a bug in the rethinkdb library
 async def changefeed():
     """ Continuously receive updates as they occur """
     r.set_loop_type('asyncio')
@@ -39,12 +41,24 @@ async def changefeed():
 def scan(live: bool) -> None:
     """ Output stuff live """
 
+    # if live:
+    #     loop = asyncio.get_event_loop()
+    #     try:
+    #         loop.run_until_complete(changefeed())
+    #     except KeyboardInterrupt:
+    #         loop.run_until_complete(close())
+
     if live:
-        loop = asyncio.get_event_loop()
-        try:
-            loop.run_until_complete(changefeed())
-        except KeyboardInterrupt:
-            loop.run_until_complete(close())
+        while True:
+            try:
+                clear_console()
+                targets = get_targets()
+
+                for target in targets:
+                    print_target(target)
+                time.sleep(2)
+            except KeyboardInterrupt:
+                exit()
 
     else:
         targets = get_targets()

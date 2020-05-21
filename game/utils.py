@@ -1,6 +1,7 @@
 import time
 import random
 import sys
+from os import system, name
 from termcolor import cprint
 from termcolor import colored
 
@@ -48,3 +49,12 @@ def host_check(target: str, port: int) -> dict:
         exit()
 
     return tgt
+
+
+def clear_console():
+
+    if name == 'nt':
+        system('cls')
+
+    else:
+        system('clear')
