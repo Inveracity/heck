@@ -1,7 +1,7 @@
+from os import linesep
+from sys import exit
 from typing import NoReturn
 from typing import Any
-
-from os import linesep
 
 from termcolor import cprint
 
@@ -23,9 +23,7 @@ def ls(t: dict, _: Any) -> NoReturn:
 
 
 def cat(t: dict, args: list) -> NoReturn:
-    '''
-        a valid arg is a path to a file like: ['/data/secret.dat']
-    '''
+    ''' a valid arg is a path to a file like: ['/data/secret.dat'] '''
 
     folders = t['files']
 

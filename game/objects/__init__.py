@@ -1,6 +1,7 @@
 gameobjects = [
     {
-        "id": "server1",
+        "id": "venus",
+        "type": "server",
         "states": {
             "hacked": 0,
             "online": 1
@@ -15,8 +16,8 @@ gameobjects = [
         },
         "files": [{
             "data": [{
-                "name": "secret.dat",
-                "content": "very secret data\n"
+                "name": "sentinel.dat",
+                "content": "encryption key: r25KjzgbsKiOUdD7"
             }, {
                 "name": "users.dat",
                 "content": "John\nGrace\nMildred\n"
@@ -24,12 +25,14 @@ gameobjects = [
         }, {
             "trashbin": [{
                 "name": "email.txt",
-                "content": "to my stupid boss: I quit!!\n"
+                "content": "\n  From: Mildred\n  To  : Grace\n  We keep getting hacked, it's awful! I QUIT!\n"
             }]
         }]
     },
     {
-        "id": "server2",
+        "id": "mars",
+        "type": "server",
+        "sentinel": "warrior",
         "states": {
             "hacked": 0,
             "online": 1
@@ -43,6 +46,23 @@ gameobjects = [
             "443": {
                 "vuln": ["ddos"],
                 "info": "secure web server",
+                "state": "open"
+            }
+        }
+    },
+    {
+        "id": "warrior",
+        "type": "sentinel",
+        "states": {
+            "online": 1,
+            "detected": 0
+        },
+        "key": "r25KjzgbsKiOUdD7",
+        "killswitch": "raspberries",
+        "ports": {
+            "16660": {
+                "vuln": ["deflect"],
+                "info": "sentinel service",
                 "state": "open"
             }
         }

@@ -1,3 +1,4 @@
+from sys import exit
 from typing import NoReturn
 
 from rethinkdb import r
@@ -30,13 +31,17 @@ def target_details(target: str, port: int = 0) -> dict:
 
     meta               = {}
     meta["hostname"]   = tgt.get('id')
+    meta["type"]       = tgt.get('type')
     meta["password"]   = tgt.get('password', '')
-    meta["online"]     = tgt.get('states', {})['online']
-    meta["hacked"]     = tgt.get('states', {})['hacked']
+    meta["online"]     = tgt.get('states', {}).get('online', {})
+    meta["hacked"]     = tgt.get('states', {}).get('hacked', {})
     meta["files"]      = tgt.get('files', {})
     meta["ports"]      = tgt.get('ports')
     meta["vuln"]       = meta['ports'].get(port, {}).get('vuln', 0)
     meta["port_state"] = meta['ports'].get(port, {}).get('state', 'closed')
+    meta["key"]        = tgt.get('key', '')
+    meta["killswitch"] = tgt.get('killswitch', '')
+    meta["sentinel"]   = tgt.get('sentinel', {})
 
     return meta
 

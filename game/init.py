@@ -13,6 +13,7 @@ def init():
     conn = connect()
 
     print("creating database")
+    r.db_drop(DATABASE).run(conn)
     if DATABASE not in r.db_list().run(conn):
         r.db_create(DATABASE).run(conn)
 

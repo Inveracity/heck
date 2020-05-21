@@ -1,6 +1,8 @@
 import asyncio
 import time
 
+from sys import exit
+
 from game.database import get_targets
 from game.database import connect_hack as connect
 from game.utils import clear_console
@@ -51,25 +53,25 @@ def print_target(target: dict):
 
     target_ports = []
     for port in ports:
-        port_state = ports[port]['state']
+        port_state = ports.get(port, {}).get('state')
         color = "red"
 
         if port_state == "open":
             color = "green"
 
-        target_ports.append([port, colored(port_state, color), ports[port]['info']])
+        target_ports.append([port, colored(port_state, color), ports.get(port, {}).get('info', '')])
 
-    if target['states']['hacked']:
+    if target.get('states', {}).get('hacked'):
         state = colored("(hacked)", "yellow")
 
-    if not target["states"]["online"]:
+    if not target.get('states', {}).get("online"):
         state = colored("(offline)", "red")
 
-    cprint(f"{current_time()}{"-" * 50}", "cyan")
+    cprint(f"{current_time()}{'-' * 50}", "cyan")
 
     print(f"{target['id']} {state}")
 
-    if target["states"]["online"]:
+    if target.get('states', {}).get("online"):
         headers = ["port", "status", "info"]
         print(tabulate(target_ports, headers, tablefmt="plain"))
         print()

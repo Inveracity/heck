@@ -1,3 +1,4 @@
+from sys import exit
 from termcolor import cprint
 
 from game.database import state_change
