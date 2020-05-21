@@ -1,16 +1,11 @@
-import traceback
-
-from sys import exit
-
 from typing import NoReturn
 
 from rethinkdb import r
 from game.database import connect
+from game.database import DATABASE
+from game.database import TABLES
 from game.objects import gameobjects
 from game.config import write_config
-
-DATABASE = 'hack'
-TABLES = ['players', 'targets']
 
 
 def init(host: str, password: str) -> NoReturn:
@@ -18,10 +13,13 @@ def init(host: str, password: str) -> NoReturn:
 
     write_config({"host": host, "password": password})
 
-    conn = connect()
+    conn = connect(DATABASE)
 
-    print("creating database")
-    r.db_drop(DATABASE).run(conn)
+    print("cleaning up old database")
+    if DATABASE in r.db_list().run(conn):
+        r.db_drop(DATABASE).run(conn)
+
+    print("creating new database")
     if DATABASE not in r.db_list().run(conn):
         r.db_create(DATABASE).run(conn)
 
@@ -31,9 +29,6 @@ def init(host: str, password: str) -> NoReturn:
             r.db(DATABASE).table_create(table).run(conn)
 
     db = r.db(DATABASE)
-
-    players = db.table('players')
-    players.insert({"id": 1, "player": "john"}).run(conn)
 
     print("inserting game objects")
     targets = db.table('targets')

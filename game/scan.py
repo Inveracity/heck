@@ -6,7 +6,7 @@ from typing import NoReturn
 from sys import exit
 
 from game.database import get_targets
-from game.database import connect_hack as connect
+from game.database import connect
 from game.utils import clear_console
 from game.utils import current_time
 
@@ -49,7 +49,7 @@ def scan(live: bool) -> None:
     #   File "asyncio\base_events.py", line 616, in run_until_complete
     #   File "game\scan.py", line 26, in changefeed
     #     conn    = await connect()
-    #   File "game\database.py", line 20, in connect_hack
+    #   File "game\database.py", line 20, in connect
     #     r.set_loop_type('asyncio')
     #   File "site-packages\rethinkdb\__init__.py", line 69, in set_loop_type
     #   File "site-packages\pkg_resources\__init__.py", line 1134, in resource_exists

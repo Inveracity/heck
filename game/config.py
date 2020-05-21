@@ -16,6 +16,7 @@ def write_config(config: dict) -> NoReturn:
         print("Could not write file to disk: Permission denied")
         exit(1)
 
+
 def read_config() -> dict:
     with open(conffile, "r") as f:
         config = f.read()

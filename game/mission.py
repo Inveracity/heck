@@ -13,6 +13,7 @@ def is_port_open(target: str, port: str) -> bool:
         return True
     return False
 
+
 def is_hacked(target: str) -> bool:
     tgt = target_details(target)
     return tgt['hacked']
@@ -21,14 +22,14 @@ def is_hacked(target: str) -> bool:
 def mission_fail(message: str) -> NoReturn:
     cprint("Mission Failed", "red")
     cprint(message, "yellow")
-
     cprint("Reset with the init command and try again.", "cyan")
+
 
 def mission_success(message: str) -> NoReturn:
     cprint("Mission Succeeded", "green")
     cprint(message, "yellow")
-
     cprint("github.com/inveracity/heck", "cyan")
+
 
 def level_one(status: bool = False) -> NoReturn:
     mission = """
