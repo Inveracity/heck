@@ -4,6 +4,32 @@ from game.database import target_details
 from termcolor import cprint
 
 
+def is_port_open(target: str, port: str) -> bool:
+    tgt = target_details(target)
+
+    ports = tgt['ports']
+
+    if ports[port]['state'] == "open":
+        return True
+    return False
+
+def is_hacked(target: str) -> bool:
+    tgt = target_details(target)
+    return tgt['hacked']
+
+
+def mission_fail(message: str) -> NoReturn:
+    cprint("Mission Failed", "red")
+    cprint(message, "yellow")
+
+    cprint("Reset with the init command and try again.", "cyan")
+
+def mission_success(message: str) -> NoReturn:
+    cprint("Mission Succeeded", "green")
+    cprint(message, "yellow")
+
+    cprint("github.com/inveracity/heck", "cyan")
+
 def level_one(status: bool = False) -> NoReturn:
     mission = """
 Mission briefing:
@@ -24,21 +50,19 @@ Goal:
     """
 
     if status:
-
-        mars = target_details("mars")
-        if mars['hacked'] == 1:
-            cprint("Mission successful", "green")
+        if is_hacked("mars"):
+            mission_success("You managed to block the website long enough for the election to be a total failure!")
             return
 
-        ports = mars['ports']
+        if not is_port_open("warrior", "16660"):
+            mission_fail("The sentinel is now blocking you")
+            return
 
-        if ports['443']['state'] == "open" or ports['80']['state'] == "open":
+        if any([is_port_open("mars", "443"), is_port_open("mars", "80")]):
             cprint("It's not over yet, the webserver is still targetable", "cyan")
             return
 
-        cprint("Mission failed, the webserver blocked your attempts at taking it down!", "red")
-
-        cprint("Reset with the init command and try again.", "cyan")
+        mission_fail("the webserver blocked your attempts at taking it down!")
 
     else:
         cprint(mission, "cyan")
