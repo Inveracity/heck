@@ -30,7 +30,6 @@ def init():
     targets = db.table('targets')
 
     for game_object in gameobjects:
-
         print(f"game object: {game_object.get('id', '')}")
         res = targets.insert(game_object, conflict="replace").run(conn)
 

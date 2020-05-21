@@ -41,6 +41,20 @@ def target_details(target: str, port: int = 0) -> dict:
     return meta
 
 
+# When compiling to an executable this unfortunately doesn't work due to a bug in the rethinkdb library
+async def changefeed():
+    """ Continuously receive updates as they occur """
+    r.set_loop_type('asyncio')
+
+    conn    = await connect()
+    targets = r.table('targets')
+    cursor  = await targets.changes(include_initial=True).run(conn)
+
+    async for target in cursor:
+        new = target.get("new_val", {})
+        print_target(new)
+
+
 def state_change(target: str, key: str, value: int) -> dict:
     ''' change target state '''
     conn = connect_hack()

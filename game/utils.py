@@ -58,3 +58,14 @@ def clear_console():
 
     else:
         system('clear')
+
+
+def current_time() -> str:
+    """ return current time of day """
+    now = datetime.now()
+
+    clock = now.strftime("%H:%M:%S")
+    return clock
+
+async def close():
+    exit()

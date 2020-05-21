@@ -1,3 +1,6 @@
+from string import ascii_lowercase
+from secrets import choice
+
 from game.database import target_details
 
 
@@ -8,7 +11,7 @@ def password(target: dict) -> bool:
     hidden = [char for char in secret]
     board  = ["_" for x in hidden]
 
-    if password:
+    if secret:
         while True:
             try:
                 user_input = input("enter password: ")

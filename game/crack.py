@@ -5,7 +5,7 @@ from game.database import port_state_change
 
 from game.utils import dot_animation
 from game.utils import host_check
-from game.guess import password
+from game.password import password
 
 
 def crack(target, port):
@@ -28,10 +28,14 @@ def crack(target, port):
     if password(target):
         cprint("Access Granted", "green")
         cprint("Injecting reverse shell", "cyan")
+
         if dot_animation():
             exit()
+
         cprint("Injection complete", "green")
+
         state_change(target, "hacked", 1)
+
         return
 
     return
