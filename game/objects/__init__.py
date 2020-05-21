@@ -6,7 +6,7 @@ gameobjects = [
             "hacked": 0,
             "online": 1
         },
-        "password": "racehorse",
+        "password": "rosebud",
         "ports": {
             "3306": {
                 "vuln": ["crack"],

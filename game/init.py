@@ -1,15 +1,29 @@
+import traceback
 import os
 import inspect
+
+from sys import exit
 
 from rethinkdb import r
 from game.database import connect
 from game.objects import gameobjects
+from game.config import write_config
 
 DATABASE = 'hack'
 TABLES = ['players', 'targets']
 
 
-def init():
+def init(host: str, password: str):
+    """ Initialise game with a config and inserting game objects into database """
+
+    try:
+        write_config({"host": host, "password": password})
+
+    except Exception:
+        print("Unable to write config file!")
+        print(traceback.format_exc())
+        exit(1)
+
     conn = connect()
 
     print("creating database")
@@ -33,6 +47,3 @@ def init():
     for game_object in gameobjects:
         print(f"game object: {game_object.get('id', '')}")
         res = targets.insert(game_object, conflict="replace").run(conn)
-
-if __name__ == "__main__":
-    init()

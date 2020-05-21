@@ -17,31 +17,35 @@ from termcolor import cprint
 from datetime import datetime
 
 
+async def close():
+    exit()
+
+
+async def changefeed():
+    """ Continuously receive updates as they occur """
+    r.set_loop_type('asyncio')
+
+    conn    = await connect()
+    targets = r.table('targets')
+    cursor  = await targets.changes(include_initial=True).run(conn)
+
+    async for target in cursor:
+        new = target.get("new_val", {})
+        print_target(new)
+
+
 def scan(live: bool) -> None:
     """ Output stuff live """
 
-    # if live:
-    #     loop = asyncio.get_event_loop()
-    #     try:
-    #         loop.run_until_complete(changefeed())
-    #     except KeyboardInterrupt:
-    #         loop.run_until_complete(close())
-
     if live:
-        while True:
-            try:
-                clear_console()
-                targets = get_targets()
-
-                for target in targets:
-                    print_target(target)
-                time.sleep(2)
-            except KeyboardInterrupt:
-                exit()
+        loop = asyncio.get_event_loop()
+        try:
+            loop.run_until_complete(print_target(changefeed()))
+        except KeyboardInterrupt:
+            loop.run_until_complete(close())
 
     else:
         targets = get_targets()
-
         for target in targets:
             print_target(target)
 

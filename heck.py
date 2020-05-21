@@ -23,8 +23,9 @@ parser.add_argument(
 subparsers = parser.add_subparsers(dest="cmd")
 
 # --------- Init Args ---------
-init_p = subparsers.add_parser('init', help="Insert game objects into database and/or reset the game")
-
+init_p = subparsers.add_parser('init', help="init ip or host and password to generate a config and insert game objects into database")
+init_p.add_argument("host")
+init_p.add_argument("password")
 
 # --------- Scan Args ---------
 scan_p = subparsers.add_parser('scan', help="Scan for targets")
@@ -96,16 +97,6 @@ mission_p.add_argument(
     action="store_true"
 )
 
-# --------- Version Args ---------
-mission_p = subparsers.add_parser('mission', help="Get mission briefing or check mission status")
-mission_p.add_argument(
-    "--status",
-    dest='status',
-    default=False,
-    help="check if mission was successful",
-    action="store_true"
-)
-
 if __name__ == "__main__":
     args = parser.parse_args()
     print()
@@ -115,7 +106,7 @@ if __name__ == "__main__":
         exit()
 
     if args.cmd == "init":
-        init()
+        init(args.host, args.password)
 
     if args.cmd == "scan":
         scan(args.live)

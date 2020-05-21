@@ -70,5 +70,3 @@ def current_time() -> str:
     clock = now.strftime("%H:%M:%S")
     return clock
 
-async def close():
-    sys.exit()
