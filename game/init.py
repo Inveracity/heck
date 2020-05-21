@@ -16,13 +16,7 @@ TABLES = ['players', 'targets']
 def init(host: str, password: str) -> NoReturn:
     """ Initialise game with a config and inserting game objects into database """
 
-    try:
-        write_config({"host": host, "password": password})
-
-    except Exception:
-        print("Unable to write config file!")
-        print(traceback.format_exc())
-        exit(1)
+    write_config({"host": host, "password": password})
 
     conn = connect()
 
