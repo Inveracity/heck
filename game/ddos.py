@@ -27,7 +27,6 @@ def _ddos(target: dict, port: int) -> NoReturn:
             port_state_change(target, port, "closed")
             exit()
 
-
     cprint("DDoS in progress", "cyan")
     state_change(target, "online", 0)
     state_change(target, "hacked", 1)

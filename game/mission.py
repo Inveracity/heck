@@ -1,9 +1,10 @@
-from game.utils import dot_animation
+from typing import NoReturn
+
 from game.database import target_details
 from termcolor import cprint
 
 
-def level_one(status: bool = False):
+def level_one(status: bool = False) -> NoReturn:
     mission = """
 Mission briefing:
     In an attempt to subdue public unrest over
@@ -21,7 +22,6 @@ Goal:
     Avoid getting detected by the sentinel as it
     will lock you out entirely.
     """
-
 
     if status:
 

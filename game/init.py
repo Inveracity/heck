@@ -1,8 +1,8 @@
 import traceback
-import os
-import inspect
 
 from sys import exit
+
+from typing import NoReturn
 
 from rethinkdb import r
 from game.database import connect
@@ -13,7 +13,7 @@ DATABASE = 'hack'
 TABLES = ['players', 'targets']
 
 
-def init(host: str, password: str):
+def init(host: str, password: str) -> NoReturn:
     """ Initialise game with a config and inserting game objects into database """
 
     try:
@@ -46,4 +46,4 @@ def init(host: str, password: str):
 
     for game_object in gameobjects:
         print(f"game object: {game_object.get('id', '')}")
-        res = targets.insert(game_object, conflict="replace").run(conn)
+        targets.insert(game_object, conflict="replace").run(conn)

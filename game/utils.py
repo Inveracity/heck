@@ -1,6 +1,8 @@
 import time
 import sys
 
+from typing import NoReturn
+
 from datetime import datetime
 from os import system
 from os import name
@@ -54,7 +56,7 @@ def host_check(target: str, port: int) -> dict:
     return tgt
 
 
-def clear_console():
+def clear_console() -> NoReturn:
 
     if name == 'nt':
         system('cls')
@@ -69,4 +71,3 @@ def current_time() -> str:
 
     clock = now.strftime("%H:%M:%S")
     return clock
-

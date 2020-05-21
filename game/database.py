@@ -1,4 +1,3 @@
-import json
 from sys import exit
 from typing import NoReturn
 
@@ -7,6 +6,7 @@ from rethinkdb import r
 from game.config import read_config
 
 DATABASE = 'hack'
+
 
 def connect() -> r.connection_type:
     ''' connect to instance without database '''

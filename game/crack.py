@@ -1,3 +1,4 @@
+from typing import NoReturn
 from sys import exit
 from termcolor import cprint
 
@@ -9,7 +10,7 @@ from game.utils import host_check
 from game.password import password
 
 
-def crack(target, port):
+def crack(target: str, port: str) -> NoReturn:
     if dot_animation():
         exit()
 

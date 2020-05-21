@@ -53,7 +53,7 @@ login_p.add_argument('target')
 login_p.add_argument('port')
 
 # --------- Killswitch Args ---------
-killswitch_p = subparsers.add_parser('killswitch', help="Killswitch attempts to turn off a sentinel, but only if the right killswitch key is supplied")
+killswitch_p = subparsers.add_parser('killswitch', help="Killswitch will turn off off a sentinel when provided with the correct key")
 killswitch_p.add_argument('target')
 killswitch_p.add_argument('port')
 killswitch_p.add_argument(
