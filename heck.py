@@ -35,16 +35,17 @@ login_p.add_argument('target')
 login_p.add_argument('port')
 
 
-args = parser.parse_args()
+if __name__ == "__main__":
+    args = parser.parse_args()
 
-if args.cmd == "scan":
-    scan(args.live)
+    if args.cmd == "scan":
+        scan(args.live)
 
-if args.cmd == "crack":
-    crack(args.target, args.port)
+    if args.cmd == "crack":
+        crack(args.target, args.port)
 
-if args.cmd == "ddos":
-    ddos(args.target, args.port)
+    if args.cmd == "ddos":
+        ddos(args.target, args.port)
 
-if args.cmd == "login":
-    login(args.target, args.port)
+    if args.cmd == "login":
+        login(args.target, args.port)
