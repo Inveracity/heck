@@ -1,9 +1,9 @@
 import os
 import inspect
-import yaml
 
 from rethinkdb import r
 from game.database import connect
+from game.objects import gameobjects
 
 DATABASE = 'hack'
 TABLES = ['players', 'targets']
@@ -27,20 +27,12 @@ def init():
     players.insert({"id": 1, "player": "john"}).run(conn)
 
     print("inserting game objects")
-    targets      = db.table('targets')
-    filename     = inspect.getframeinfo(inspect.currentframe()).filename
-    path         = os.path.dirname(os.path.abspath(filename))
-    filepath     = os.path.join(path, "objects")
-    game_objects = [f for f in os.listdir(filepath) if os.path.isfile(os.path.join(filepath, f))]
+    targets = db.table('targets')
 
-    for game_object in game_objects:
-        file = os.path.join(filepath, game_object)
-        with open(file) as f:
-            game_object_data = f.read()
+    for game_object in gameobjects:
 
-        loaded_game_object = yaml.safe_load(game_object_data)
-        print(f"game object: {loaded_game_object.get('id', '')}")
-        res = targets.insert(loaded_game_object, conflict="replace").run(conn)
+        print(f"game object: {game_object.get('id', '')}")
+        res = targets.insert(game_object, conflict="replace").run(conn)
 
 if __name__ == "__main__":
     init()
