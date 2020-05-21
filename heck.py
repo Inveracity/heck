@@ -1,5 +1,6 @@
 import argparse
 
+from game.init import init
 from game.scan import scan
 from game.crack import crack
 from game.ddos import ddos
@@ -7,6 +8,10 @@ from game.login import login
 
 parser = argparse.ArgumentParser(description="Heck the plenet")
 subparsers = parser.add_subparsers(dest="cmd")
+
+# --------- Init Args ---------
+init_p = subparsers.add_parser('init', help="Insert game objects into database and/or reset the game")
+
 
 # --------- Scan Args ---------
 scan_p = subparsers.add_parser('scan', help="Scan for targets")
@@ -38,6 +43,9 @@ login_p.add_argument('port')
 if __name__ == "__main__":
     args = parser.parse_args()
 
+    if args.cmd == "init":
+        init()
+
     if args.cmd == "scan":
         scan(args.live)
 
@@ -49,3 +57,6 @@ if __name__ == "__main__":
 
     if args.cmd == "login":
         login(args.target, args.port)
+
+    if not args.cmd:
+        parser.print_help()

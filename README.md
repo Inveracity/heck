@@ -17,7 +17,7 @@ pip install pipenv
 pipenv sync
 
 # Set up game data
-pipenv run init
+pipenv run heck init
 
 # show help text
 pipenv run heck -h

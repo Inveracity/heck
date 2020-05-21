@@ -41,12 +41,13 @@ def scan(live: bool) -> None:
         targets = get_targets()
 
         for target in targets:
-            target = target.get('new_val')
             print_target(target)
 
 
 def print_target(target: dict):
     ports = target['ports']
+    port_state = ""
+    state = ""
 
     target_ports = []
 
@@ -60,9 +61,18 @@ def print_target(target: dict):
 
         target_ports.append([port, colored(port_state, color), ports[port]['info']])
 
-    if target['states']['online']:
-        cprint("-"*50, "cyan")
-        cprint(target['id'], "cyan")
+
+
+    if target['states']['hacked']:
+        state = colored("(hacked)", "yellow")
+
+    if not target["states"]["online"]:
+        state = colored("(offline)", "red")
+
+    cprint("-"*50, "cyan")
+    print(f"{target['id']} {state}")
+
+    if target["states"]["online"]:
         headers = ["port", "status", "info"]
         print(tabulate(target_ports, headers, tablefmt="plain"))
         print()
