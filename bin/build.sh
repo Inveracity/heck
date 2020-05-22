@@ -1,9 +1,10 @@
 #!/bin/sh
-pyinstaller --specpath bin \
+pyinstaller --specpath bin/ \
             --distpath bin/dist \
             --workpath bin/build \
             --log-level ERROR \
             --icon icon.ico \
+            --path .venv/ \
             --onefile \
-            --clean \
+            --hidden-import pkg_resources.py2_warn \
             heck.py

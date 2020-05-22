@@ -7,6 +7,7 @@ verify_ssl = true
 flake8 = "*"
 flake8-annotations = "*"
 pyinstaller = "*"
+setuptools = "<45.0.0"
 
 [packages]
 rethinkdb = "*"
@@ -21,3 +22,4 @@ python_version = "3.8"
 heck = "python heck.py"
 init = "python game/init.py"
 lint = "python -m flake8 ."
+build = "sh bin/build.sh"
