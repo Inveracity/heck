@@ -4,7 +4,6 @@ pyinstaller --specpath bin/ \
             --workpath bin/build \
             --log-level ERROR \
             --icon icon.ico \
-            --path .venv/ \
             --onefile \
-            --hidden-import pkg_resources.py2_warn \
+            --hidden-import pkg_resources \
             heck.py
