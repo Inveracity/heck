@@ -5,5 +5,5 @@ pyinstaller --specpath bin/ \
             --log-level ERROR \
             --icon icon.ico \
             --onefile \
-            --hidden-import pkg_resources \
+            --hidden-import pkg_resources.py2_warn \
             heck.py
