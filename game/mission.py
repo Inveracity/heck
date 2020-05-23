@@ -1,7 +1,8 @@
 from typing import NoReturn
 
-from game.database import target_details
 from termcolor import cprint
+
+from game.database import target_details
 
 
 def is_port_open(target: str, port: str) -> bool:

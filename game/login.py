@@ -1,7 +1,7 @@
 from os import linesep
 from sys import exit
-from typing import NoReturn
 from typing import Any
+from typing import NoReturn
 
 from termcolor import cprint
 

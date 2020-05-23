@@ -1,13 +1,13 @@
-from typing import NoReturn
 from sys import exit
+from typing import NoReturn
+
 from termcolor import cprint
 
-from game.database import state_change
 from game.database import port_state_change
-
+from game.database import state_change
+from game.password import password
 from game.utils import dot_animation
 from game.utils import host_check
-from game.password import password
 
 
 def crack(target: str, port: str) -> NoReturn:

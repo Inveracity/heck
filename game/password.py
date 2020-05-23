@@ -1,6 +1,6 @@
-from itertools import cycle
-from base64 import b64encode
 from base64 import b64decode
+from base64 import b64encode
+from itertools import cycle
 
 from termcolor import cprint
 

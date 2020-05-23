@@ -1,21 +1,19 @@
 import asyncio
 import time
-
-from typing import NoReturn
-
 from sys import exit
-
-from game.database import get_targets
-from game.database import connect
-from game.database import DATABASE
-from game.utils import clear_console
-from game.utils import current_time
-
-from rethinkdb import r
+from typing import NoReturn
 
 from tabulate import tabulate
 from termcolor import colored
 from termcolor import cprint
+
+from game.database import DATABASE
+from game.database import connect
+from game.database import get_targets
+from game.utils import clear_console
+from game.utils import current_time
+from rethinkdb import r
+from rethinkdb.errors import ReqlDriverError
 
 
 async def close() -> NoReturn:
@@ -35,18 +33,23 @@ async def changefeed() -> NoReturn:
         print_target(new)
 
 
-def scan(live: bool) -> None:
+def scan(live: bool, stream: bool) -> None:
     """ Output stuff live """
 
-    # compiling to a binary breaks: https://github.com/rethinkdb/rethinkdb-python/issues/201
-    # if live:
-    #     loop = asyncio.get_event_loop()
-    #     try:
-    #         loop.run_until_complete(changefeed())
-    #     except KeyboardInterrupt:
-    #         loop.run_until_complete(close())
+    # https://github.com/rethinkdb/rethinkdb-python/issues/201
+    if stream:
+        loop = asyncio.get_event_loop()
+        try:
+            loop.run_until_complete(changefeed())
 
-    # Instead do this, which is kinda sad
+        except KeyboardInterrupt:
+            loop.run_until_complete(close())
+
+        except ReqlDriverError:
+            print("Unable to connect to server")
+            exit(1)
+
+
     if live:
         while True:
             try:

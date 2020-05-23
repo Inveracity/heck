@@ -1,7 +1,8 @@
-from game.database import state_change
-from game.utils import host_check
-from game.password import encrypt
 from termcolor import cprint
+
+from game.database import state_change
+from game.password import encrypt
+from game.utils import host_check
 
 
 def killswitch(target: str, port: str, killswitch: str = "") -> str:

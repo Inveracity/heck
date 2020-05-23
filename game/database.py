@@ -1,10 +1,10 @@
 from sys import exit
 from typing import NoReturn
 
+from game.config import read_config
 from rethinkdb import r
 from rethinkdb.errors import ReqlAuthError
-
-from game.config import read_config
+from rethinkdb.errors import ReqlDriverError
 
 DATABASE = 'hack'
 TABLES = ['targets']
@@ -20,7 +20,9 @@ def connect(db: str = None) -> r.connection_type:
     except ReqlAuthError:
         print("Error: Wrong password. If you are using docker-compose, check the password there!")
         exit(1)
-
+    except ReqlDriverError:
+        print("Error: Unable to connect to server")
+        exit(1)
     return conn
 
 

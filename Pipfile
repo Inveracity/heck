@@ -10,10 +10,10 @@ pyinstaller = "*"
 setuptools = "<45.0.0"
 
 [packages]
-rethinkdb = "*"
 pyyaml = "*"
 termcolor = "*"
 tabulate = "*"
+rethinkdb = "*"
 
 [requires]
 python_version = "3.8"

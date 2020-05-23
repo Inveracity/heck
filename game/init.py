@@ -1,11 +1,11 @@
 from typing import NoReturn
 
-from rethinkdb import r
-from game.database import connect
+from game.config import write_config
 from game.database import DATABASE
 from game.database import TABLES
+from game.database import connect
 from game.objects import gameobjects
-from game.config import write_config
+from rethinkdb import r
 
 
 def init(host: str, password: str) -> NoReturn:

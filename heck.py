@@ -1,13 +1,14 @@
 import argparse
 from sys import exit
-from game.init import init
-from game.scan import scan
+
 from game.crack import crack
 from game.ddos import ddos
-from game.login import login
+from game.init import init
 from game.killswitch import killswitch
-from game.password import decrypt
+from game.login import login
 from game.mission import level_one
+from game.password import decrypt
+from game.scan import scan
 from game.version import version
 
 parser = argparse.ArgumentParser(description="Heck the plenet")
@@ -33,7 +34,14 @@ scan_p.add_argument(
     "--live",
     dest='live',
     default=False,
-    help="output events as they occur",
+    help="clear console and update every 2 seconds",
+    action="store_true"
+)
+scan_p.add_argument(
+    "--stream",
+    dest='stream',
+    default=False,
+    help="Stream events sequentially",
     action="store_true"
 )
 
@@ -109,7 +117,7 @@ if __name__ == "__main__":
         init(args.host, args.password)
 
     if args.cmd == "scan":
-        scan(args.live)
+        scan(args.live, args.stream)
 
     if args.cmd == "crack":
         crack(args.target, args.port)

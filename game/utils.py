@@ -1,14 +1,12 @@
-import time
 import sys
-
+import time
+from datetime import datetime
+from os import name
+from os import system
 from typing import NoReturn
 
-from datetime import datetime
-from os import system
-from os import name
-
-from termcolor import cprint
 from termcolor import colored
+from termcolor import cprint
 
 from game.database import target_details
 
