@@ -1,15 +1,13 @@
 import json
+from pathlib import Path
 from typing import NoReturn
 
 conffile = "heck.conf"
 
 
 def write_config(config: dict) -> NoReturn:
-
     try:
-        with open(conffile, "w") as f:
-            f.write(json.dumps(config))
-        f.close()
+        Path(conffile).write_text(json.dumps(config))
 
     except PermissionError:
         print("Could not write file to disk: Permission denied")
@@ -17,8 +15,4 @@ def write_config(config: dict) -> NoReturn:
 
 
 def read_config() -> dict:
-    with open(conffile, "r") as f:
-        config = f.read()
-    f.close()
-
-    return json.loads(config)
+    return json.loads(Path(conffile).read_text())
