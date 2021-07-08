@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  rethinkdb:
+    image: rethinkdb:2.4.0
+    container_name: rethinkdb
+    ports:
+      - "80:8080"
+      - "28015:28015"
+    command: rethinkdb -d /data/rdb --bind 0.0.0.0 --server-tag default --http-port 8080 --driver-port 28015 --initial-password johnny5
+    volumes:
+      - type: volume
+        source: rdbdata
+        target: /data/rdb
+
+volumes:
+  rdbdata:
